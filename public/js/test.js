@@ -1,0 +1,1 @@
+Test file located in js
