@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse # for django 1.9
-# from django.urls import reverse     # for django 3
+# from django.core.urlresolvers import reverse # for django 1.9
+from django.urls import reverse     # for django 3
 
 class QuestionManager(models.Manager):
     def new(self):
@@ -29,7 +29,8 @@ class Question(models.Model):
 class Answer(models.Model):
     text = models.TextField()
     added_at = models.DateTimeField(blank = True, auto_now_add=True)
-    question = models.OneToOneField(Question, on_delete=models.DO_NOTHING)
+    # question = models.OneToOneField(Question, on_delete=models.DO_NOTHING)
+    question = models.ForeignKey(Question, on_delete=models.DO_NOTHING)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
