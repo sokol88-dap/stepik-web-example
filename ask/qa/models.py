@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-# from django.core.urlresolvers import reverse # for django 3
-from django.urls import reverse     # for django 3
+from django.core.urlresolvers import reverse # for django 1.9
+# from django.urls import reverse     # for django 3
 
 class QuestionManager(models.Manager):
     def new(self):
