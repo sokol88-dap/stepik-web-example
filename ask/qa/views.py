@@ -7,6 +7,8 @@ from qa.forms import AskForm, AnswerForm
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
+from django.contrib.auth.models import User
+
 def test(request, *args, **kwargs):
     return HttpResponse('OK')
 
@@ -44,6 +46,7 @@ def question(request, question_id):
         form = AnswerForm(request.POST)
         if form.is_valid():
             form.clean()
+            form._user = User.objects.get(id=1)
             form.save()
             HttpResponseRedirect('/question/%s/' % question_id)
     else:
@@ -60,6 +63,7 @@ def ask(request):
         form = AskForm(request.POST)
         if form.is_valid():
             form.clean()
+            form._user = User.objects.get(id=1)
             post = form.save()
             url = post.get_url()
             return HttpResponseRedirect(url)
