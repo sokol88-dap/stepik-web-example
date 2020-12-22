@@ -10,7 +10,7 @@ import uuid
 from datetime import datetime, timedelta
 
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout, get_user
 
 def test(request, *args, **kwargs):
     return HttpResponse('OK')
@@ -74,13 +74,21 @@ def ask(request):
         form = AskForm()
     return render(request, 'qa/ask.html', {'form': form})
 
+def check_login(login, password):
+    try:
+        user = User.objects.get(username=login)
+    except Exception:
+        return None
+    if user.password != password:
+        return None
+    return user
 
 def user_login(request):
     error = ''
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        user = authenticate(username=username, password=password)
+        user = check_login(username, password)
         url = request.POST.get('continue', '/')
         if user is not None:
             login(request, user)
