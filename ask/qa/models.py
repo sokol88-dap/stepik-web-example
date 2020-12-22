@@ -10,12 +10,24 @@ class QuestionManager(models.Manager):
         return self.order_by('-rating')
 
 
+# class User(models.Model): 
+#     username = models.CharField(max_length=256, unique=True)
+#     password = models.CharField(max_length=256)
+#     email = models.CharField(max_length=256)
+
+
+# class Session(models.Model):
+#     key = models.CharField(max_length=256, unique=True)
+#     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+#     expires = models.DateTimeField()
+
+
 class Question(models.Model):
     title = models.CharField(max_length=512)
     text = models.TextField()
     added_at = models.DateTimeField(blank = True, auto_now_add=True)
     rating = models.IntegerField(default=0)
-    author = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     likes = models.ManyToManyField(User, related_name='question_like_user')
     objects = QuestionManager()
 
@@ -30,7 +42,7 @@ class Answer(models.Model):
     text = models.TextField()
     added_at = models.DateTimeField(blank = True, auto_now_add=True)
     question = models.ForeignKey(Question, on_delete=models.DO_NOTHING)
-    author = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.text
